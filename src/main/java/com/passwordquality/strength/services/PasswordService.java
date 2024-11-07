@@ -19,11 +19,13 @@ public class PasswordService {
 	}
 	
 	public String validateStrenght(Password password) {
+		List<Password> list = repository.findAll();
 		
-		if(password.getPassword().contains("123")) {
-			return "Senha muito fraca";
-		}
-		
+		for(Password ps : list) {
+			if(password.getPassword().contains(ps.getPassword())) {
+				return "Senha muito fraca";
+			}
+		}	
 		return "";
 		
 	}
