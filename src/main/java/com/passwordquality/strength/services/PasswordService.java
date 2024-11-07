@@ -19,6 +19,17 @@ public class PasswordService {
 	}
 	
 	public String validateStrenght(Password password) {
+		/*
+		 * TODO - Não usar por mensagem porque a seguinte retorna null e apaga mensagem anterior
+		 */
+		String msg = validateUpperCase(password.getPassword());
+		msg = validateLowerCase(password.getPassword());
+		
+		if (msg != null) {
+			return msg;
+		}
+		
+		
 		List<Password> list = repository.findAll();
 		
 		for(Password ps : list) {
@@ -28,5 +39,19 @@ public class PasswordService {
 		}	
 		return "";
 		
+	}
+
+	private String validateUpperCase(String password) {	
+		if(!password.matches(".*[A-Z].*")) {
+			return "Senha não possui letras minusculas";
+		}
+		return null;
+	}
+	
+	private String validateLowerCase(String password) {	
+		if(!password.matches(".*[a-z].*")) {
+			return "Senha não possui letras minusculas";
+		}
+		return null;
 	}
 }
