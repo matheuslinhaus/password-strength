@@ -11,20 +11,34 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "weak_password")
 public class Password {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String password;
-	
+	private Boolean caseSensitive = true;
+	private Boolean specialCharacter = true;
+	private Boolean number = true;
+	private Integer minimumSize = 8;
+
+
 	public Password() {
-		
 	}
 
 	public Password(Long id, String password) {
-		super();
 		this.id = id;
 		this.password = password;
+	}
+
+	public Password(Long id, String password, Boolean caseSensitive, 
+					Boolean specialCharacter, Boolean number,
+					Integer minimumSize, Integer maximumSize) {
+		this.id = id;
+		this.password = password;
+		this.caseSensitive = caseSensitive;
+		this.specialCharacter = specialCharacter;
+		this.number = number;
+		this.minimumSize = minimumSize;
 	}
 
 	public Long getId() {
@@ -43,6 +57,38 @@ public class Password {
 		this.password = password;
 	}
 
+	public Boolean getCaseSensitive() {
+		return caseSensitive;
+	}
+
+	public void setCaseSensitive(Boolean caseSensitive) {
+		this.caseSensitive = caseSensitive;
+	}
+
+	public Boolean getSpecialCharacter() {
+		return specialCharacter;
+	}
+
+	public void setSpecialCharacter(Boolean specialCharacter) {
+		this.specialCharacter = specialCharacter;
+	}
+
+	public Boolean getNumber() {
+		return number;
+	}
+
+	public void setNumber(Boolean number) {
+		this.number = number;
+	}
+
+	public Integer getMinimumSize() {
+		return minimumSize;
+	}
+
+	public void setMinimumSize(Integer minimumSize) {
+		this.minimumSize = minimumSize;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(password);
@@ -59,4 +105,5 @@ public class Password {
 		Password other = (Password) obj;
 		return Objects.equals(password, other.password);
 	}
+
 }
