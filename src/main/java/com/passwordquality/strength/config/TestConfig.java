@@ -19,8 +19,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		Password ps = new Password(null, "123");	
-		passwordRepository.saveAll(Arrays.asList(ps));
+		Password ps = new Password(null, "123");
+		Password ps2 = new Password(null, "Senha001@");
+		passwordRepository.saveAll(Arrays.asList(ps, ps2));
 	}
 
 }

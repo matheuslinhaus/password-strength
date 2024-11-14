@@ -2,6 +2,8 @@ package com.passwordquality.strength.entities;
 
 import java.util.Objects;
 
+import com.passwordquality.strength.exceptions.StrengthException;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +23,6 @@ public class Password {
 	private Boolean number = true;
 	private Integer minimumSize = 8;
 
-
 	public Password() {
 	}
 
@@ -30,9 +31,8 @@ public class Password {
 		this.password = password;
 	}
 
-	public Password(Long id, String password, Boolean caseSensitive, 
-					Boolean specialCharacter, Boolean number,
-					Integer minimumSize, Integer maximumSize) {
+	public Password(Long id, String password, Boolean caseSensitive, Boolean specialCharacter, Boolean number,
+			Integer minimumSize, Integer maximumSize) {
 		this.id = id;
 		this.password = password;
 		this.caseSensitive = caseSensitive;
@@ -104,6 +104,51 @@ public class Password {
 			return false;
 		Password other = (Password) obj;
 		return Objects.equals(password, other.password);
+	}
+
+	public void validateStrengthPassword() throws StrengthException {
+		containsMinimumSize();
+		containsNumbers();
+		containsCaseSensitive();
+		containsSpecialCharacter();
+	}
+
+	private void containsMinimumSize() throws StrengthException {
+		if (password.length() < minimumSize) {
+			throw new StrengthException(
+					"Sua senha é muito curta. Escolha uma senha com pelo menos 8 caracteres para garantir a máxima segurança.");
+		}
+	}
+
+	private void containsNumbers() throws StrengthException {
+		if (number) {
+			if (!password.matches(".*\\d.*")) {
+				throw new StrengthException(
+						"Senhas com uma combinação de letras e números são mais seguras. Adicione um número à sua senha para torná-la mais segura.");
+			}
+		}
+	}
+
+	private void containsCaseSensitive() throws StrengthException {
+		if (caseSensitive) {
+			if (!password.matches(".*[A-Z].*")) {
+				throw new StrengthException(
+						"Sua senha não contém nenhuma letra maiúscula. Inclua pelo menos uma letra maiúscula aumentar a segurança de sua senha.");
+			}
+			if (!password.matches(".*[a-z].*")) {
+				throw new StrengthException(
+						"Sua senha não contém nenhuma letra minúscula. Inclua pelo menos uma letra minúscula aumentar a segurança de sua senha.");
+			}
+		}
+	}
+
+	private void containsSpecialCharacter() throws StrengthException {
+		if (specialCharacter) {
+			if (!password.matches(".*[^a-zA-Z0-9].*")) {
+				throw new StrengthException(
+						"Para fortalecer sua senha, adicione um caractere especial (ex: !, @, #). Isso a torna mais segura!");
+			}
+		}
 	}
 
 }
